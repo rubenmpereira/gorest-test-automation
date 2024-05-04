@@ -24,7 +24,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "d47ee381-ddde-4e6a-91ee-2d3b099c9c68"
+					}
+				],
 				"url": {
 					"raw": "{{url}}/public/v2/users",
 					"host": [
@@ -48,7 +55,9 @@
 						"exec": [
 							"pm.test(\"status is 201\",function(){\r",
 							"    pm.expect(pm.response.code).to.eql(201);\r",
-							"})"
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"id\", pm.response.json().id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -60,10 +69,17 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "b89497f4-9320-4128-8064-648105c82ec1"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\",\r\n        \"email\": \"Chirdanjeev@mail.h\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"active\"\r\n    }",
+					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\",\r\n        \"email\": \"Sainimail@mail.gn\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"active\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,9 +118,16 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "b4845ae8-2c19-4272-a150-b24bda135a25"
+					}
+				],
 				"url": {
-					"raw": "{{url}}/public/v2/users/2322074",
+					"raw": "{{url}}/public/v2/users/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -112,7 +135,7 @@
 						"public",
 						"v2",
 						"users",
-						"2322074"
+						"{{id}}"
 					]
 				}
 			},
@@ -136,10 +159,17 @@
 			],
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "92fa3d90-4a95-4c52-ab90-8e316f65d4f4"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"name\":\"test\"\r\n}",
+					"raw": "{\r\n\"email\":\"updated@email.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -147,7 +177,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/users/2322076",
+					"raw": "{{url}}/public/v2/users/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -155,7 +185,7 @@
 						"public",
 						"v2",
 						"users",
-						"2322076"
+						"{{id}}"
 					]
 				}
 			},
@@ -179,9 +209,16 @@
 			],
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "f91aa4b4-4718-4f9d-bb95-0cae82de1e12"
+					}
+				],
 				"url": {
-					"raw": "{{url}}/public/v2/users/2322074",
+					"raw": "{{url}}/public/v2/users/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -189,7 +226,7 @@
 						"public",
 						"v2",
 						"users",
-						"2322074"
+						"{{id}}"
 					]
 				}
 			},
@@ -226,6 +263,13 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

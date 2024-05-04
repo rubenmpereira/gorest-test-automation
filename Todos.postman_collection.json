@@ -24,7 +24,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "b80a0693-e6d6-4693-a8f3-9058d141a06c"
+					}
+				],
 				"url": {
 					"raw": "{{url}}/public/v2/todos",
 					"host": [
@@ -40,7 +47,7 @@
 			"response": []
 		},
 		{
-			"name": "Create Todo",
+			"name": "Create User for todo",
 			"event": [
 				{
 					"listen": "test",
@@ -48,7 +55,9 @@
 						"exec": [
 							"pm.test(\"status is 201\",function(){\r",
 							"    pm.expect(pm.response.code).to.eql(201);\r",
-							"})"
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"userId\", pm.response.json().id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -60,10 +69,70 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"uuid": "17455384-24cd-4567-b20c-807b44c012a4"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
+					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\",\r\n        \"email\": \"Sainimail@fmail.pt\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"active\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/public/v2/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 201\",function(){\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"id\", pm.response.json().id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "74a7f14a-177c-4b78-9c2e-11d2638bc83d"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"user_id\": \"{{userId}}\",\r\n        \"title\": \"details\",\r\n        \"status\": \"pending\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,9 +171,16 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "b0a4ab71-03fd-4075-9ab8-f71c82fa2c3a"
+					}
+				],
 				"url": {
-					"raw": "{{url}}/public/v2/todos/48510",
+					"raw": "{{url}}/public/v2/todos/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -112,7 +188,7 @@
 						"public",
 						"v2",
 						"todos",
-						"48510"
+						"{{id}}"
 					]
 				}
 			},
@@ -139,10 +215,17 @@
 			},
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "de0789a0-c93b-4c72-b36f-9940bce42b7d"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
+					"raw": "    {\r\n        \"title\": \"updated title\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -150,7 +233,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/todos/48510",
+					"raw": "{{url}}/public/v2/todos/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -158,7 +241,48 @@
 						"public",
 						"v2",
 						"todos",
-						"48510"
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Todos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\",function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"uuid": "af52b442-6cf1-462a-a448-3ec6ebf12bef"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/public/v2/users/{{userId}}/todos",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{userId}}",
+						"todos"
 					]
 				}
 			},
@@ -185,7 +309,14 @@
 			},
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "c22c2949-4987-4354-8db6-704a783a4649"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
@@ -196,7 +327,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/todos/48598",
+					"raw": "{{url}}/public/v2/todos/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -204,42 +335,7 @@
 						"public",
 						"v2",
 						"todos",
-						"48598"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User Todos",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"status is 200\",function(){\r",
-							"    pm.expect(pm.response.code).to.eql(200);\r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/public/v2/users/2322074/todos",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"public",
-						"v2",
-						"users",
-						"2322074",
-						"todos"
+						"{{id}}"
 					]
 				}
 			},
@@ -266,10 +362,17 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "161568a3-420a-4a94-862e-745c8092cec7"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
+					"raw": "    {\r\n        \"title\": \"details\",\r\n        \"status\": \"pending\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -277,7 +380,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/users/6886520/todos",
+					"raw": "{{url}}/public/v2/users/{{userId}}/todos",
 					"host": [
 						"{{url}}"
 					],
@@ -285,8 +388,48 @@
 						"public",
 						"v2",
 						"users",
-						"6886520",
+						"{{userId}}",
 						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User for todo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 204\",function(){\r",
+							"    pm.expect(pm.response.code).to.eql(204);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"uuid": "eb1ea64e-e1ef-4443-a05f-094b1ef414ee"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/public/v2/users/{{userId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{userId}}"
 					]
 				}
 			},
@@ -323,6 +466,18 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
 		}
 	]
 }

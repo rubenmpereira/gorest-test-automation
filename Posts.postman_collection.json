@@ -24,7 +24,14 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "45874516-bc13-4b28-9f52-7c38cd2beeba"
+					}
+				],
 				"url": {
 					"raw": "{{url}}/public/v2/posts",
 					"host": [
@@ -40,7 +47,7 @@
 			"response": []
 		},
 		{
-			"name": "Create Post",
+			"name": "Create User for post",
 			"event": [
 				{
 					"listen": "test",
@@ -48,7 +55,9 @@
 						"exec": [
 							"pm.test(\"status is 201\",function(){\r",
 							"    pm.expect(pm.response.code).to.eql(201);\r",
-							"})"
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"userId\", pm.response.json().id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -60,10 +69,70 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"uuid": "2c0e8f1b-2184-4aaa-95e4-0c7f9efb4f93"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
+					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\",\r\n        \"email\": \"Sainimail@fmail.pt\",\r\n        \"gender\": \"male\",\r\n        \"status\": \"active\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/public/v2/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 201\",function(){\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"id\", pm.response.json().id);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "c6a1f040-6c08-4200-a856-3dc0098318f8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"user_id\": {{userId}},\r\n        \"title\": \"post\",\r\n        \"body\": \"info\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,9 +171,16 @@
 			],
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "0c874ebd-2707-4bc7-953f-f24ddbed0b0c"
+					}
+				],
 				"url": {
-					"raw": "{{url}}/public/v2/posts/121007",
+					"raw": "{{url}}/public/v2/posts/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -112,7 +188,7 @@
 						"public",
 						"v2",
 						"posts",
-						"121007"
+						"{{id}}"
 					]
 				}
 			},
@@ -139,10 +215,17 @@
 			},
 			"request": {
 				"method": "PUT",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "8156fa3c-c22a-49c3-8378-24e54dab7ade"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
+					"raw": "    {\r\n        \"title\": \"Updated title\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -150,7 +233,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/posts/121045",
+					"raw": "{{url}}/public/v2/posts/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -158,7 +241,48 @@
 						"public",
 						"v2",
 						"posts",
-						"121045"
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Posts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 200\",function(){\r",
+							"    pm.expect(pm.response.code).to.eql(200);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"uuid": "7601fd7e-46be-40c5-a263-1bedcd0db96c"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/public/v2/users/{{userId}}/posts",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{userId}}",
+						"posts"
 					]
 				}
 			},
@@ -185,7 +309,14 @@
 			},
 			"request": {
 				"method": "DELETE",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "4cf91fa4-1ba3-4a28-9cd7-cb26a96fbd01"
+					}
+				],
 				"body": {
 					"mode": "raw",
 					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
@@ -196,7 +327,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/posts/121045",
+					"raw": "{{url}}/public/v2/posts/{{id}}",
 					"host": [
 						"{{url}}"
 					],
@@ -204,42 +335,7 @@
 						"public",
 						"v2",
 						"posts",
-						"121045"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get User Posts",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"status is 200\",function(){\r",
-							"    pm.expect(pm.response.code).to.eql(200);\r",
-							"})"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/public/v2/users/2322074/posts",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"public",
-						"v2",
-						"users",
-						"2322074",
-						"posts"
+						"{{id}}"
 					]
 				}
 			},
@@ -254,7 +350,9 @@
 						"exec": [
 							"pm.test(\"status is 201\",function(){\r",
 							"    pm.expect(pm.response.code).to.eql(201);\r",
-							"})"
+							"})\r",
+							"\r",
+							"pm.collectionVariables.set(\"id\", pm.response.json().id);"
 						],
 						"type": "text/javascript",
 						"packages": {}
@@ -266,10 +364,17 @@
 			},
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"type": "text",
+						"uuid": "78331e5c-1fc7-4034-af69-5cb172a80d20"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"name\": \"Chiranjeev Saini\"\r\n    }",
+					"raw": "    {\r\n        \"title\": \"post\",\r\n        \"body\": \"info\"\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -277,7 +382,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{url}}/public/v2/users/6886520/posts",
+					"raw": "{{url}}/public/v2/users/{{userId}}/posts",
 					"host": [
 						"{{url}}"
 					],
@@ -285,8 +390,48 @@
 						"public",
 						"v2",
 						"users",
-						"6886520",
+						"{{userId}}",
 						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User for post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status is 204\",function(){\r",
+							"    pm.expect(pm.response.code).to.eql(204);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-RateLimit-Limit",
+						"value": "1000",
+						"uuid": "932d922c-2a89-45ee-aec6-544011b46567"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/public/v2/users/{{userId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{userId}}"
 					]
 				}
 			},
@@ -323,6 +468,18 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
 		}
 	]
 }
