@@ -16,7 +16,7 @@ Getting started
 2. Import the collection and enviroment files to postman:
 ![Screenshot 2024-05-04 121645](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/c2659349-582b-4a30-8c70-165e711b7a32)
 
-2. Define the gorest api key in environment variables
+2. Define the gorest api key in environment variables   
 Environments > Test > token
 ![Screenshot 2024-05-04 121842](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/e444fad7-8c66-4803-8881-d2cae7547fd4)
 
@@ -41,3 +41,13 @@ How to execute load tests
 
 2. Here select the Performance tab, configure the test and press Run
    ![Screenshot 2024-05-04 123546](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/94896db9-f9f4-4ea0-9fe0-e2dde4328777)
+
+Note: during performance test endpoints may response with 429 if too many requests are made.   
+
+3. Change the X-RateLimit-Limit header value to change the request limit per minute  
+Collections > Endpoint > Headers > X-RateLimit-Limit
+![Screenshot 2024-05-04 132414](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/a642369b-2be7-414d-ae57-e6096e248559)
+
+Note: This change has to be done to each indivudual endpoint.
+
+4. After changing re-run the collection
