@@ -1,15 +1,26 @@
 # gorest-test-automation
 
+This repository has the necessary files to test the gorest Api with postman end-to-end tests.
+
+Postman files:   
+Users.postman_collection   
+Posts.postman_collection   
+Comments.postman_collection   
+Todos.postman_collection   
+Test.postman_environment.json   
+
 Getting started
 
-1. Import the collection and enviroment files to postman:
+1. Clone the repository
+
+2. Import the collection and enviroment files to postman:
 ![Screenshot 2024-05-04 121645](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/c2659349-582b-4a30-8c70-165e711b7a32)
 
-3. Define the gorest api key in environment variables
+2. Define the gorest api key in environment variables
 Environments > Test > token
 ![Screenshot 2024-05-04 121842](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/e444fad7-8c66-4803-8881-d2cae7547fd4)
 
-4. Make sure you select the Test environment by checking the Test checkmark
+3. Make sure you select the Test environment by checking the Test checkmark
 ![Screenshot 2024-05-04 122126](https://github.com/rubenmpereira/gorest-test-automation/assets/156867735/64da52dd-b1c8-4596-9b18-82477515a96f)
 
 
